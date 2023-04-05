@@ -1,0 +1,55 @@
+version: 3.7
+
+services:
+  patient:
+    build: ./oc-patient
+    container_name: oc-patient
+    ports:
+      - '3001:3001' 
+    networks:
+      - backend
+    depends_on:
+      - mongodb
+      - rabbitmq
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/openclinic
+      - RABBITMQ_HOST=amqps://bqwlbngm:C7SpvnKySFhW-nxyOJuJcLy0DBdhdbwE@jackal.rmq.cloudamqp.com/bqwlbngm
+    volumes:
+      - '.:/oc-patient'
+
+  gateway:
+    build: ./oc-gateway
+    container_name: oc-gateway
+    ports:
+      - '3000:3000'    
+    networks:
+      - backend
+    depends_on:
+      - patient
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=amqps://bqwlbngm:C7SpvnKySFhW-nxyOJuJcLy0DBdhdbwE@jackal.rmq.cloudamqp.com/bqwlbngm
+    volumes:
+      - '.:/oc-gateway'
+
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    networks:
+      - backend
+    volumes:
+      - 'mongo:/data/db'
+
+  rabbitmq:
+    image: rabbitmq:3
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - backend
+ 
+networks:
+  backend:
