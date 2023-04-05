@@ -7,6 +7,7 @@ import { PatientsGraphQL } from './graphql/patient.resolver';
 import { PatientsDatabase } from './mongodb/patient.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Patient, PatientSchema } from './mongodb/patient.schema';
+import { PatientHealth } from './health/health.controller';
 
 @Module({
   imports: [
@@ -36,6 +37,6 @@ import { Patient, PatientSchema } from './mongodb/patient.schema';
     MongooseModule.forFeature([{ name: Patient.name, schema: PatientSchema }]),
   ],
   providers: [PatientsGraphQL, PatientsDatabase],
-  controllers: [PatientsRabbitMQ],
+  controllers: [PatientsRabbitMQ, PatientHealth],
 })
 export class PatientsModule {}
