@@ -10,13 +10,12 @@ import { IntrospectAndCompose } from '@apollo/gateway';
       gateway: {
         supergraphSdl: new IntrospectAndCompose({
           subgraphs: [
-            { name: 'patients', url: 'http://oc-patient:3001/graphql' }, 
-          //  { name: 'appointments', url: 'http://oc-appointment:3002/graphql' },
+            { name: 'patients', url: 'http://oc-patient:3001/graphql' },
+            //  { name: 'appointments', url: 'http://oc-appointment:3002/graphql' },
           ],
-        }),        
+        }),
       },
     }),
   ],
 })
-
 export class AppModule {}

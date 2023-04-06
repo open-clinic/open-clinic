@@ -17,10 +17,11 @@ services:
       - mongodb
       - rabbitmq
     environment:
+      - NODE_ENV=development
       - MONGODB_URI=mongodb://mongodb:27017/openclinic
       - RABBITMQ_HOST=amqps://bqwlbngm:C7SpvnKySFhW-nxyOJuJcLy0DBdhdbwE@jackal.rmq.cloudamqp.com/bqwlbngm
     volumes:
-      - './oc-patient:/oc-patient'
+      - './oc-patient:/app'
 
   gateway:
     build: ./oc-gateway
@@ -34,9 +35,10 @@ services:
         condition: service_healthy
         rabbitmq:
     environment:
+      - NODE_ENV=development
       - RABBITMQ_HOST=amqps://bqwlbngm:C7SpvnKySFhW-nxyOJuJcLy0DBdhdbwE@jackal.rmq.cloudamqp.com/bqwlbngm
     volumes:
-      - './oc-gateway:/oc-gateway'
+      - './oc-gateway:/app'
 
   mongodb:
     image: mongo:4.4
