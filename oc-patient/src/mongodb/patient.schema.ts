@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID, Directive } from '@nestjs/graphql';
+import { ObjectType, Field, Directive } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -10,15 +10,15 @@ export class Patient extends Document {
   _id: string;
 
   @Prop()
-  @Field({ description: "Patient Name" })
+  @Field({ description: 'Patient Name' })
   name: string;
 
   @Prop()
-  @Field({  description: "Patient Birthdate" })
+  @Field({ description: 'Patient Birthdate' })
   birthdate: Date;
-  
+
   @Prop({ unique: true })
-  @Field({ description: "Patient Brazilian CPF" })
+  @Field({ description: 'Patient Brazilian CPF' })
   cpf: string;
 }
 

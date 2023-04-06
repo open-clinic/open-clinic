@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
-export class PatientsDatabase {  
+export class PatientsDatabase {
   constructor(@InjectModel(Patient.name) private database: Model<Patient>) {}
 
   async create(createPatientInput: CreatePatientInput): Promise<Patient> {
@@ -18,14 +18,18 @@ export class PatientsDatabase {
   }
 
   async findOne(_id: string): Promise<Patient> {
-    return this.database.findOne(patient => patient._id === _id).exec();
+    return this.database.findOne((patient) => patient._id === _id).exec();
   }
 
   async update(_id: string, updatePatientInput: UpdatePatientInput) {
-    return this.database.findOneAndUpdate(patient => patient._id === _id, updatePatientInput).exec();
+    return this.database
+      .findOneAndUpdate((patient) => patient._id === _id, updatePatientInput)
+      .exec();
   }
 
   async remove(_id: string) {
-    return this.database.findOneAndRemove(patient => patient._id === _id).exec();
+    return this.database
+      .findOneAndRemove((patient) => patient._id === _id)
+      .exec();
   }
 }

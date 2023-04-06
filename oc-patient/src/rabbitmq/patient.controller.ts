@@ -1,4 +1,4 @@
-import { Controller, Injectable } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { CreatePatientInput } from '../dto/create-patient.input';
 import { UpdatePatientInput } from '../dto/update-patient.input';
 import { MessagePattern } from '@nestjs/microservices';
@@ -17,12 +17,10 @@ export class PatientsRabbitMQ {
   @MessagePattern('patients-update')
   async update(updatePatientInput: UpdatePatientInput): Promise<Patient> {
     return this.database.update(updatePatientInput._id, updatePatientInput);
-  } 
+  }
 
   @MessagePattern('patients-remove')
   async remove(_id: string) {
     return this.database.remove(_id);
-  } 
-
+  }
 }
-
