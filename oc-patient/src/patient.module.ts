@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloFederationDriver, ApolloFederationDriverConfig } from '@nestjs/apollo';
+import {
+  ApolloFederationDriver,
+  ApolloFederationDriverConfig,
+} from '@nestjs/apollo';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PatientsRabbitMQ } from './rabbitmq/patient.controller';
 import { PatientsGraphQL } from './graphql/patient.resolver';
@@ -16,11 +19,11 @@ import { PatientHealth } from './health/health.controller';
         name: 'patients_queue',
         transport: Transport.RMQ,
         options: {
-          urls: [ process.env.RABBITMQ_HOST ],
+          urls: [process.env.RABBITMQ_HOST],
           queue: 'patients_queue',
           noAck: false,
           queueOptions: {
-            durable: false
+            durable: false,
           },
         },
       },
