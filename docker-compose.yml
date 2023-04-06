@@ -30,8 +30,9 @@ services:
     networks:
       - backend
     depends_on:
-      - patient
-      - rabbitmq
+      patient:
+        condition: service_healthy
+        rabbitmq:
     environment:
       - RABBITMQ_HOST=amqps://bqwlbngm:C7SpvnKySFhW-nxyOJuJcLy0DBdhdbwE@jackal.rmq.cloudamqp.com/bqwlbngm
     volumes:
