@@ -3,6 +3,7 @@ version: 3.7
 services:
   patient:
     build: ./oc-patient
+    restart: always
     container_name: oc-patient
     ports:
       - '3001:3001' 
@@ -19,12 +20,14 @@ services:
     environment:
       - NODE_ENV=development
       - MONGODB_URI=mongodb://mongodb:27017/openclinic
-      - RABBITMQ_HOST=amqps://bqwlbngm:C7SpvnKySFhW-nxyOJuJcLy0DBdhdbwE@jackal.rmq.cloudamqp.com/bqwlbngm
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
     volumes:
       - './oc-patient:/app'
 
   gateway:
     build: ./oc-gateway
+    restart: always
     container_name: oc-gateway
     ports:
       - '3000:3000'
@@ -38,15 +41,14 @@ services:
     depends_on:
       patient:
         condition: service_healthy
-        rabbitmq:
     environment:
       - NODE_ENV=development
-      - RABBITMQ_HOST=amqps://bqwlbngm:C7SpvnKySFhW-nxyOJuJcLy0DBdhdbwE@jackal.rmq.cloudamqp.com/bqwlbngm
     volumes:
       - './oc-gateway:/app'
 
   mongodb:
     image: mongo:4.4
+    restart: always
     container_name: mongodb
     ports:
       - '27017:27017'
@@ -56,11 +58,19 @@ services:
       - 'mongo:/data/db'
 
   rabbitmq:
-    image: rabbitmq:3
+    image: rabbitmq:3-management
+    restart: always
     container_name: rabbitmq
     ports:
       - '5672:5672'
-      - '15672:15672'
+      - '15672:15672'  
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=open-clinic
     networks:
       - backend
  

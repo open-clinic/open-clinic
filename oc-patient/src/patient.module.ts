@@ -19,9 +19,10 @@ import { PatientHealth } from './health/health.controller';
         name: 'patients_queue',
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBITMQ_HOST],
+          urls: [
+            `amqp://${process.env.RABBITMQ_HOST}:${process.env.RABBITMQ_PORT}`,
+          ],
           queue: 'patients_queue',
-          noAck: false,
           queueOptions: {
             durable: false,
           },
