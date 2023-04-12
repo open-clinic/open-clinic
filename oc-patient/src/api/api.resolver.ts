@@ -5,15 +5,15 @@ import {
   Args,
   ResolveReference,
 } from '@nestjs/graphql';
-import { Patient } from '../mongodb/patient.schema';
-import { CreatePatientInput } from '../dto/create-patient.input';
-import { UpdatePatientInput } from '../dto/update-patient.input';
+import { Patient } from '../database/database.schema';
+import { CreatePatientInput } from './dto/create-patient.input';
+import { UpdatePatientInput } from './dto/update-patient.input';
 import { ClientProxy } from '@nestjs/microservices';
 import { Inject } from '@nestjs/common';
-import { PatientsDatabase } from '../mongodb/patient.service';
+import { PatientsDatabase } from '../database/database.service';
 
 @Resolver(() => Patient)
-export class PatientsGraphQL {
+export class PatientsApi {
   constructor(
     @Inject('patients_queue') private client: ClientProxy,
     private readonly database: PatientsDatabase,

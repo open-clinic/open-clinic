@@ -1,11 +1,13 @@
 import { NestFactory } from '@nestjs/core';
-import { PatientsModule } from './patient.module';
+import { PatientsAppModule } from './app/app.module';
 import { Transport } from '@nestjs/microservices';
+import { PatientsApiModule } from './api/api.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(PatientsModule);
+  const app = await NestFactory.create(PatientsAppModule);
 
   app.connectMicroservice({
+    module: PatientsApiModule,
     transport: Transport.RMQ,
     options: {
       urls: [

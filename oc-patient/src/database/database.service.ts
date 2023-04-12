@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePatientInput } from '../dto/create-patient.input';
-import { UpdatePatientInput } from '../dto/update-patient.input';
-import { Patient } from './patient.schema';
+import { CreatePatientInput } from '../api/dto/create-patient.input';
+import { UpdatePatientInput } from '../api/dto/update-patient.input';
+import { Patient } from './database.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 

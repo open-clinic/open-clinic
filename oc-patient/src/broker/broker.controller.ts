@@ -1,12 +1,12 @@
 import { Controller } from '@nestjs/common';
-import { CreatePatientInput } from '../dto/create-patient.input';
-import { UpdatePatientInput } from '../dto/update-patient.input';
+import { CreatePatientInput } from '../api/dto/create-patient.input';
+import { UpdatePatientInput } from '../api/dto/update-patient.input';
 import { MessagePattern } from '@nestjs/microservices';
-import { PatientsDatabase } from '../mongodb/patient.service';
-import { Patient } from '../mongodb/patient.schema';
+import { PatientsDatabase } from '../database/database.service';
+import { Patient } from '../database/database.schema';
 
 @Controller()
-export class PatientsRabbitMQ {
+export class PatientsBroker {
   constructor(private readonly database: PatientsDatabase) {}
 
   @MessagePattern('patients-create')
