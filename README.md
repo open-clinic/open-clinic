@@ -1,6 +1,6 @@
 ## Description
 
-App to study how to connect distinct technologiess.
+Work in Progress.
 
 ## Installation
 
