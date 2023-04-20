@@ -1,13 +1,13 @@
-FROM node:14-alpine
+FROM node:latest AS development
 
 LABEL name=oc-patient
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
 
-RUN yarn install
+RUN npm install
 
-VOLUME [ "/app" ]
+COPY . .
 
-CMD ["yarn", "start:dev"]
+CMD [ "yarn", "start:dev" ]

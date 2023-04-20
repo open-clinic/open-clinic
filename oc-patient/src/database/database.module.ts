@@ -6,7 +6,7 @@ import { PatientsDatabase } from './database.service';
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      useFactory: () => ({ uri: process.env.MONGODB_URI }),
+      useFactory: () => ({ uri: `mongodb://${process.env.MONGODB_URI}`}),
     }),
     MongooseModule.forFeature([{ name: Patient.name, schema: PatientSchema }]),
   ],

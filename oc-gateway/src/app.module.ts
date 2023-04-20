@@ -11,8 +11,8 @@ import { GatewayHealth } from './health/health.controller';
       gateway: {
         supergraphSdl: new IntrospectAndCompose({
           subgraphs: [
-            { name: 'patients', url: 'http://oc-patient:3001/graphql' },
-            //  { name: 'appointments', url: 'http://oc-appointment:3002/graphql' },
+            { name: 'patients', url: `http://${process.env.OC_PATIENT_URI}/graphql` },
+            //  { name: 'appointments', url: `http://${process.env.OC_APPOINTMENTS_URI}/graphql` },
           ],
         }),
       },
