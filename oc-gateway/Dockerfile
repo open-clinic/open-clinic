@@ -1,13 +1,10 @@
-FROM node:latest AS development
+FROM node:latest AS image
+RUN npm install -g @nestjs/cli
 
-LABEL name=oc-gateway
-
-WORKDIR /app
-
-COPY package.json ./
-
-RUN npm install
-
+FROM image AS base
+WORKDIR /usr/src/app
 COPY . .
+RUN yarn install
 
-CMD [ "yarn", "start:dev" ]
+FROM base AS development
+CMD [ "yarn", "start:dev", "--preserveWatchOutput" ]

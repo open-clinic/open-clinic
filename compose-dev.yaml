@@ -1,0 +1,71 @@
+version: "3.7"
+
+services:
+  patient:
+    container_name: patient
+    build:
+      context: oc-patient
+      target: development
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "-v", "patient", "3001" ]
+      interval: 30s
+      timeout: 10s
+    depends_on:
+      database:
+        condition: service_started
+      broker:
+        condition: service_healthy
+    links:
+      - database
+      - broker
+    environment:
+      - MONGODB_URI=database:27017
+      - RABBITMQ_URI=broker:5672
+      - NODE_ENV=development
+    volumes:
+      - ./oc-patient:/usr/src/app:cached
+
+  gateway:
+    container_name: gateway
+    build:
+      context: oc-gateway
+      target: development
+    ports:
+      - 3000:3000
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "-v", "gateway", "3000" ]
+      interval: 30s
+      timeout: 10s
+    depends_on:
+      patient:
+        condition: service_healthy
+    links:
+      - patient
+    environment:
+      - OC_PATIENT_URI=patient:3001
+      - NODE_ENV=development
+    volumes:
+      - ./oc-gateway:/usr/src/app:cached
+
+  database:
+    container_name: database
+    image: mongo:4.4
+    restart: always
+    ports:
+      - "27017:27017"
+
+  broker:
+    container_name: broker
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=open-clinic
